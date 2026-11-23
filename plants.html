@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Green Plants – Plant CO₂ Absorption Tracker | EcoTrack</title>
+  <meta name="description" content="Add and scan your household plants and trees to estimate their annual biological carbon dioxide absorption and lifetime environmental offset.">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="plants-view">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link"><i class="fa-solid fa-earth-americas"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Back to Dashboard Link -->
+      <div style="margin-bottom: 16px;">
+        <a href="dashboard.html" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 700; color: var(--primary-600); text-decoration: none;">
+          <i class="fa-solid fa-arrow-left"></i> Back to Dashboard Hub
+        </a>
+      </div>
+
+      <!-- Hero Banner & Combined Estimated Annual Absorption Summary -->
+      <section class="plant-hero-banner">
+        <div class="plant-hero-content">
+          <div class="plant-hero-title">
+            <i class="fa-solid fa-seedling"></i> My Green Plants – CO₂ Absorption Tracker
+          </div>
+          <p class="plant-hero-sub">
+            Track your living indoor houseplants, balcony greens, and outdoor trees. Measure their scientifically estimated biological carbon dioxide absorption and collective environmental offset.
+          </p>
+
+          <div class="plant-kpi-row">
+            <!-- 1. Total Plants Saved -->
+            <div class="plant-kpi-box">
+              <div class="plant-kpi-label"><i class="fa-solid fa-leaf"></i> Saved Plants</div>
+              <div class="plant-kpi-num" id="kpi-total-plants">0</div>
+              <div class="plant-kpi-meta">Catalogued in your garden</div>
+            </div>
+
+            <!-- 2. Combined Estimated Annual Absorption -->
+            <div class="plant-kpi-box">
+              <div class="plant-kpi-label"><i class="fa-solid fa-cloud-arrow-down"></i> Estimated CO₂ Absorption</div>
+              <div>
+                <span class="plant-kpi-num" id="kpi-total-absorption">0.00</span>
+                <span class="plant-kpi-unit">kg CO₂/year</span>
+              </div>
+              <div class="plant-kpi-meta">Combined annual sequestration</div>
+            </div>
+
+            <!-- 3. Car Distance Equivalent -->
+            <div class="plant-kpi-box">
+              <div class="plant-kpi-label"><i class="fa-solid fa-car-side"></i> Vehicle Emission Offset</div>
+              <div>
+                <span class="plant-kpi-num" id="kpi-car-offset">0</span>
+                <span class="plant-kpi-unit">km offset</span>
+              </div>
+              <div class="plant-kpi-meta">Gasoline passenger car driving</div>
+            </div>
+
+            <!-- 4. Mature Tree Equivalents -->
+            <div class="plant-kpi-box">
+              <div class="plant-kpi-label"><i class="fa-solid fa-tree"></i> Mature Tree Equiv.</div>
+              <div>
+                <span class="plant-kpi-num" id="kpi-tree-offset">0.00</span>
+                <span class="plant-kpi-unit">trees</span>
+              </div>
+              <div class="plant-kpi-meta">Based on 21.8 kg CO₂/yr standard</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action & Search Bar -->
+      <div class="plant-action-bar">
+        <div style="position: relative; flex-grow: 1; max-width: 360px;">
+          <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 13px; color: var(--text-muted); font-size: 0.85rem;"></i>
+          <input type="text" class="plant-search-input" id="plant-search-input" placeholder="Search saved plants by name or species...">
+        </div>
+
+        <button class="btn btn-primary" id="btn-open-plant-modal" style="display: inline-flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-camera"></i> Scan or Add My Plant
+        </button>
+      </div>
+
+      <!-- Plants Grid (Dynamically Populated) -->
+      <div class="plants-grid" id="plants-grid"></div>
+
+      <!-- Empty State -->
+      <div class="calc-prompt-box" id="plants-empty-state" style="display: none; padding: 48px 24px;">
+        <div class="calc-prompt-icon" style="font-size: 3.5rem; color: #10b981;">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+        <div class="calc-prompt-text" style="font-size: 1.3rem;">No Plants Tracked Yet</div>
+        <p class="calc-prompt-sub" style="margin-bottom: 24px;">
+          You haven't added any plants to your tracker yet. Scan a leaf or enter your indoor plants, balcony herbs, or garden trees to begin measuring their annual CO₂ sequestration!
+        </p>
+        <button class="btn btn-primary" id="btn-empty-add-plant">
+          <i class="fa-solid fa-plus"></i> Add Your First Plant
+        </button>
+      </div>
+
+      <!-- Scientific Estimation Methodology & Disclaimers -->
+      <div class="plant-scientific-disclaimer">
+        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+          <i class="fa-solid fa-microscope" style="color: var(--primary-600);"></i>
+          Scientific Estimation Methodology &amp; Data Transparency
+        </h4>
+        <p style="margin-bottom: 8px;">
+          <strong>Estimated CO₂ Absorption:</strong> Absorption metrics are calibrated using peer-reviewed horticultural and forestry biomass accumulation benchmarks (derived from USDA Forest Service and IPCC Good Practice Guidance models). Each estimate covers a standard 1-year annual period (365 days) for the specified species, size, and approximate age.
+        </p>
+        <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+          <strong>Scientific Disclaimer:</strong> A photographic scan or mobile digital intake does <em>not</em> directly measure instantaneous gas exchange or real-time physical photosynthesis rates. The scanner identifies the botanical species morphology, while the algorithm models expected annual biological sequestration under standard healthy sunlight, hydration, and soil conditions. Actual sequestration depends on irradiance, temperature, pot volume, and leaf area index.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       Add / Scan My Plant Modal (Standard Project Modal Structure)
+       ========================================================================= -->
+  <div id="plant-modal" class="modal-overlay">
+    <div class="modal-card plant-modal-card">
+      <button class="modal-close-btn" id="btn-close-plant-modal" type="button" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="margin-bottom: 20px;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <i class="fa-solid fa-seedling text-emerald"></i> Add / Scan My Plant
+        </h2>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;">
+          Capture or upload a plant photo for AI species recognition and CO₂ estimation.
+        </p>
+      </div>
+
+      <!-- Image Intake Zone -->
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <label class="calc-label" style="margin: 0;">
+            <i class="fa-solid fa-camera"></i> Plant Photo (Camera or File)
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-take-photo" style="padding: 4px 10px; font-size: 0.78rem;">
+              <i class="fa-solid fa-camera"></i> Camera
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-upload-file" style="padding: 4px 10px; font-size: 0.78rem;">
+              <i class="fa-solid fa-folder-open"></i> Upload
+            </button>
+          </div>
+        </div>
+
+        <!-- Dropzone / Click to Upload -->
+        <div class="plant-scanner-dropzone" id="plant-dropzone">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2.2rem; color: var(--primary-500); margin-bottom: 10px;"></i>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">
+            Click to take a photo or select an image
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">
+            Supports camera snapshot &amp; drag-and-drop (JPG, PNG, WEBP)
+          </div>
+        </div>
+
+        <!-- Hidden File Inputs -->
+        <input type="file" id="plant-file-input" accept="image/*" style="display: none;">
+        <input type="file" id="plant-camera-input" accept="image/*" capture="environment" style="display: none;">
+
+        <!-- Preview Container -->
+        <div class="scanner-preview-container" id="scanner-preview-container">
+          <img id="scanner-preview-img" src="" alt="Plant preview">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-remove-photo" style="padding: 4px 10px; font-size: 0.78rem;">
+              <i class="fa-solid fa-rotate-left"></i> Change Photo
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-ai-scan" style="padding: 4px 12px; font-size: 0.78rem;">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> AI Species Scan
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Recognition Suggestions -->
+        <div id="ai-suggestions-container" style="display: none; margin-top: 12px;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-800); margin-bottom: 6px;">
+            <i class="fa-solid fa-brain"></i> AI Suggested Species (Click to apply):
+          </div>
+          <div class="ai-suggestion-pills" id="ai-suggestions-list"></div>
+        </div>
+      </div>
+
+      <!-- Intake Form -->
+      <form id="plant-form">
+        <!-- Plant Nickname -->
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="plant-name">Plant Nickname / Label <span style="color: #ef4444;">*</span></label>
+          <input type="text" class="calc-input" id="plant-name" placeholder="e.g. Living Room Snake Plant, Balcony Palm" required maxlength="100">
+        </div>
+
+        <!-- Species Selection / Manual Override -->
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="plant-species-select">Plant Species <span style="color: #ef4444;">*</span></label>
+          <select class="calc-select" id="plant-species-select">
+            <option value="">-- Loading Species Catalog... --</option>
+          </select>
+        </div>
+
+        <!-- Or custom species if not in catalog -->
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="plant-custom-species" style="font-size: 0.8rem; color: var(--text-muted);">
+            Or enter custom species if unlisted:
+          </label>
+          <input type="text" class="calc-input" id="plant-custom-species" placeholder="e.g. Fiddle Leaf Fig, Jade Plant">
+        </div>
+
+        <!-- Size & Age Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="calc-input-group">
+            <label class="calc-label" for="plant-size">Plant Size</label>
+            <select class="calc-select" id="plant-size">
+              <option value="small">Small (&lt; 30 cm / Tabletop)</option>
+              <option value="medium" selected>Medium (30 - 90 cm / Standard Pot)</option>
+              <option value="large">Large (90 - 180 cm / Floor Plant)</option>
+              <option value="mature">Mature / Tree (&gt; 180 cm / Canopy)</option>
+            </select>
+          </div>
+
+          <div class="calc-input-group">
+            <label class="calc-label" for="plant-age">Approx. Age (months)</label>
+            <input type="number" class="calc-input" id="plant-age" value="6" min="1" max="600">
+          </div>
+        </div>
+
+        <!-- Planting Date & Notes -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <div class="calc-input-group">
+            <label class="calc-label" for="plant-date">Planting / Acquisition Date</label>
+            <input type="date" class="calc-input" id="plant-date">
+          </div>
+
+          <div class="calc-input-group">
+            <label class="calc-label" for="plant-notes">Notes / Location (Optional)</label>
+            <input type="text" class="calc-input" id="plant-notes" placeholder="e.g. Near south-facing window">
+          </div>
+        </div>
+
+        <!-- Live Estimated Absorption Preview in Modal -->
+        <div class="plant-absorption-box" style="margin-bottom: 20px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: var(--radius-md);">
+          <div>
+            <div class="plant-absorption-label" style="color: #166534;">
+              <i class="fa-solid fa-calculator"></i> Estimated CO₂ Absorption
+            </div>
+            <div id="modal-live-methodology" style="font-size: 0.73rem; color: #15803d; max-width: 320px; line-height: 1.3; margin-top: 2px;">
+              Calculated via botanical biomass accumulation benchmarks. Covers a 1-year annual operational period.
+            </div>
+          </div>
+          <div class="plant-absorption-val" id="modal-live-absorption" style="color: #166534; font-size: 1.35rem;">
+            0.35 <span style="font-size: 0.85rem; font-weight: 600;">kg CO₂/year</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-plant-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-plant">
+            <i class="fa-solid fa-plus"></i> Save Plant to Tracker
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Standard EcoTrack Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Standard EcoTrack Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-header">
+        <div class="profile-avatar-circle" id="profile-avatar-display">🌱</div>
+        <div>
+          <h2 class="profile-user-name" id="profile-name-display">Alex Rivers</h2>
+          <div class="profile-user-email" id="profile-email-display">alex@college.edu</div>
+          <span class="user-badge-pill" id="profile-joined-display" style="margin-top: 6px; display: inline-block;">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+            <li><a href="plants.html">My Green Plants</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/plants.js"></script>
+</body>
+</html>

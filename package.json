@@ -1,0 +1,20 @@
+{
+  "name": "ecotrack-carbon-calculator",
+  "version": "1.0.0",
+  "description": "EcoTrack – Full-Stack Carbon Footprint Tracker and Lifestyle App",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "test": "node backend/test/test-api.js",
+    "server": "node backend/server.js"
+  },
+  "keywords": [
+    "carbon-footprint",
+    "calculator",
+    "ecotrack",
+    "express",
+    "mongodb"
+  ],
+  "author": "EcoTrack Team",
+  "license": "ISC"
+}

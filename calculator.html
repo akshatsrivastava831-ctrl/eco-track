@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carbon Calculator &amp; What-If Simulator | EcoTrack</title>
+  <meta name="description" content="Calculate your detailed carbon footprint across transportation, electricity, food, and waste. Receive targeted personalized tips and simulate habit changes.">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="calculator-view">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link active"><i class="fa-solid fa-seedling"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon (With dropdown popup) -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="section-header" style="text-align: left; margin-bottom: 32px;">
+        <span class="section-tag">Environmental Footprint Engine</span>
+        <h1 class="section-title">Comprehensive Carbon Calculator</h1>
+        <p class="section-subtitle" style="margin: 0;">
+          Input your routine lifestyle parameters to compute your precise daily emissions and generate personalized reduction recommendations.
+        </p>
+      </div>
+
+      <!-- Calculator Form Card -->
+      <div class="calculator-card" id="calculator-form">
+        <form id="detailed-calc-form">
+
+          <!-- 1. Transportation -->
+          <div class="calc-section">
+            <h2 class="calc-section-title">
+              <i class="fa-solid fa-car" style="color: var(--primary-600);"></i>
+              1. Transportation
+            </h2>
+            <div class="calc-form-grid">
+              <div class="calc-input-group">
+                <label class="calc-label" for="calc-vehicle-type">Vehicle Type</label>
+                <select class="calc-select" id="calc-vehicle-type">
+                  <option value="petrol_car" selected>Petrol Car (Standard Sedan/SUV)</option>
+                  <option value="diesel_car">Diesel Car</option>
+                  <option value="hybrid_car">Hybrid Vehicle</option>
+                  <option value="electric_car">Electric Vehicle (EV)</option>
+                  <option value="motorbike">Motorcycle / Scooter</option>
+                  <option value="bus">Public Bus</option>
+                  <option value="metro">Metro Transit</option>
+                  <option value="bicycle">Bicycle (Zero Emission)</option>
+                  <option value="walking">Walking (Zero Emission)</option>
+                </select>
+              </div>
+
+              <div class="calc-input-group">
+                <div style="display: flex; justify-content: space-between;">
+                  <label class="calc-label" for="calc-distance-km">Daily Distance Travelled</label>
+                  <span id="calc-distance-display" style="font-size: 0.88rem; font-weight: 800; color: var(--primary-700);">25 km/day</span>
+                </div>
+                <input type="range" class="custom-range" id="calc-distance-km" min="0" max="100" value="25" step="5" style="margin-top: 10px;">
+              </div>
+
+              <div class="calc-input-group" style="justify-content: center;">
+                <label class="calc-checkbox-label">
+                  <input type="checkbox" id="calc-carpooling">
+                  <span>I regularly carpool with others (50% credit)</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Electricity -->
+          <div class="calc-section">
+            <h2 class="calc-section-title">
+              <i class="fa-solid fa-bolt" style="color: var(--energy-sky);"></i>
+              2. Home Electricity &amp; Utilities
+            </h2>
+            <div class="calc-form-grid">
+              <div class="calc-input-group">
+                <label class="calc-label" for="calc-electricity-kwh">Estimated Monthly Power Usage (kWh)</label>
+                <input type="number" class="calc-input" id="calc-electricity-kwh" value="140" min="20" max="1000">
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Avg. 1-2 person apartment: 120–180 kWh</span>
+              </div>
+
+              <div class="calc-input-group" style="justify-content: center;">
+                <label class="calc-checkbox-label">
+                  <input type="checkbox" id="calc-renewable">
+                  <span>My home uses solar panels or green energy tariff</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Food Preference -->
+          <div class="calc-section">
+            <h2 class="calc-section-title">
+              <i class="fa-solid fa-utensils" style="color: var(--food-leaf);"></i>
+              3. Dietary Preference
+            </h2>
+            <div class="calc-form-grid">
+              <div class="calc-input-group">
+                <label class="calc-label" for="calc-diet">Primary Diet</label>
+                <select class="calc-select" id="calc-diet">
+                  <option value="meat_heavy">High Meat Consumer (Daily beef/lamb)</option>
+                  <option value="mixed" selected>Mixed Diet (Omnivore, occasional meat &amp; poultry)</option>
+                  <option value="pescatarian">Pescatarian (Fish &amp; plant foods)</option>
+                  <option value="vegetarian">Vegetarian (Dairy &amp; eggs, no meat)</option>
+                  <option value="vegan">100% Plant-Based (Vegan)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Waste -->
+          <div class="calc-section">
+            <h2 class="calc-section-title">
+              <i class="fa-solid fa-trash-can" style="color: var(--waste-slate);"></i>
+              4. Waste &amp; Recycling
+            </h2>
+            <div class="calc-form-grid">
+              <div class="calc-input-group">
+                <label class="calc-label" for="calc-waste-bags">Household Waste Bags / Day</label>
+                <select class="calc-select" id="calc-waste-bags">
+                  <option value="0.5">Low (~0.5 small bag / day)</option>
+                  <option value="1.5" selected>Medium (~1 to 1.5 standard bags / day)</option>
+                  <option value="3">High (2+ large bags / day)</option>
+                </select>
+              </div>
+
+              <div class="calc-input-group">
+                <label class="calc-label" for="calc-recycling">Recycling Discipline</label>
+                <select class="calc-select" id="calc-recycling">
+                  <option value="none">No recycling / All into landfill</option>
+                  <option value="partial" selected>Moderate (Recycle paper, plastic bottles)</option>
+                  <option value="strict">Strict (Compost organic waste, zero-single use)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calculate Button -->
+          <div style="padding-top: 24px; text-align: center;">
+            <button type="button" class="btn btn-primary" id="run-calculator-btn" style="padding: 15px 44px; font-size: 1.05rem;">
+              <i class="fa-solid fa-calculator"></i> Calculate &amp; Save Footprint
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Initial Prompt When Not Calculated Yet (Requirement 3) -->
+      <div class="calc-prompt-box" id="calc-initial-prompt">
+        <div class="calc-prompt-icon">
+          <i class="fa-solid fa-lightbulb"></i>
+        </div>
+        <div class="calc-prompt-text">Calculate your footprint to get personalized tips.</div>
+        <p class="calc-prompt-sub">
+          Fill in your daily parameters above and press "Calculate &amp; Save Footprint" to reveal your total carbon footprint, category breakdown, and personalized reduction tips.
+        </p>
+      </div>
+
+      <!-- Calculation Results Panel (Revealed after calculation) -->
+      <div class="calc-results-card" id="calc-results-card">
+        <!-- 1. Total Carbon Footprint Result -->
+        <div class="calc-results-hero">
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); margin-bottom: 8px;">Calculation Result</span>
+          <h2 style="font-size: 1.4rem; color: var(--text-secondary);">Your Estimated Footprint</h2>
+          <div class="calc-result-number" id="calc-total-co2">-- kg CO₂</div>
+          <p style="font-size: 0.95rem; color: var(--text-secondary);">Daily carbon emissions generated by your routine</p>
+        </div>
+
+        <!-- 2. Highest Contributor Callout -->
+        <div class="calc-highest-alert" id="calc-highest-callout">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong id="calc-highest-title">Transportation is your biggest contributor</strong>
+            <p style="font-size: 0.88rem; color: #c2410c; margin-top: 2px;" id="calc-highest-desc">
+              Accounting for your main daily emissions.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3. Category Breakdown Grid -->
+        <div style="margin: 24px 0 12px 0;">
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 12px;">
+            <i class="fa-solid fa-chart-pie" style="color: var(--primary-600); margin-right: 6px;"></i> Category Breakdown
+          </h3>
+          <div class="calc-breakdown-grid">
+            <div class="calc-breakdown-box">
+              <div style="font-size: 1.3rem; color: var(--primary-600); margin-bottom: 6px;"><i class="fa-solid fa-car"></i></div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Transport</div>
+              <div style="font-size: 1.35rem; font-weight: 800; margin-top: 4px;" id="calc-t-val">-- kg</div>
+            </div>
+
+            <div class="calc-breakdown-box">
+              <div style="font-size: 1.3rem; color: var(--energy-sky); margin-bottom: 6px;"><i class="fa-solid fa-bolt"></i></div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Electricity</div>
+              <div style="font-size: 1.35rem; font-weight: 800; margin-top: 4px;" id="calc-e-val">-- kg</div>
+            </div>
+
+            <div class="calc-breakdown-box">
+              <div style="font-size: 1.3rem; color: var(--food-leaf); margin-bottom: 6px;"><i class="fa-solid fa-utensils"></i></div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Food</div>
+              <div style="font-size: 1.35rem; font-weight: 800; margin-top: 4px;" id="calc-f-val">-- kg</div>
+            </div>
+
+            <div class="calc-breakdown-box">
+              <div style="font-size: 1.3rem; color: var(--waste-slate); margin-bottom: 6px;"><i class="fa-solid fa-trash-can"></i></div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase;">Waste</div>
+              <div style="font-size: 1.35rem; font-weight: 800; margin-top: 4px;" id="calc-w-val">-- kg</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Personalized Tips (Rendered Directly With/After Calculator Result - Requirement 3) -->
+        <div id="calc-personalized-tips-section" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+          <div style="margin-bottom: 16px;">
+            <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); margin-bottom: 6px;">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Tailored For You
+            </span>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 4px 0;" id="calc-tips-heading">
+              Personalized Reduction Tips
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0;" id="calc-tips-sub">
+              Targeted recommendations based on your highest emission contributor.
+            </p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;" id="calc-tips-grid">
+            <!-- Dynamically populated based on actual highest contributor -->
+          </div>
+        </div>
+
+        <div style="text-align: center; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 28px;">
+          <a href="dashboard.html" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-gauge-high"></i> View in Dashboard
+          </a>
+          <a href="progress.html" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-chart-line"></i> View Monthly Progress
+          </a>
+          <a href="#simulator-section" class="btn btn-outline-primary btn-sm">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Try What-If Simulator
+          </a>
+        </div>
+      </div>
+
+      <!-- "What If?" Carbon Simulator Section -->
+      <section id="simulator-section" class="simulator-wrapper" style="margin-top: 48px;">
+        <div class="simulator-header">
+          <span class="section-tag">Interactive Simulation Hub</span>
+          <h2>🔮 What If I Change My Habit?</h2>
+          <p class="section-subtitle">
+            Simulate the tangible environmental impact of everyday decisions. Test how shifting transport choices slashes carbon emissions and saves trees.
+          </p>
+        </div>
+
+        <div class="simulator-comparison-grid">
+          <!-- Current Routine -->
+          <div class="sim-box sim-box-current">
+            <div class="sim-box-tag current">Current Habit</div>
+            
+            <div class="sim-select-group">
+              <label class="sim-label" for="sim-current-mode">Current Vehicle / Commute</label>
+              <select class="sim-select" id="sim-current-mode">
+                <option value="car" selected>🚗 Petrol / Diesel Car</option>
+                <option value="bus">🚌 Public Bus</option>
+                <option value="metro">🚇 Metro Transit</option>
+              </select>
+            </div>
+
+            <div class="sim-slider-wrap">
+              <div class="sim-slider-row">
+                <span>Distance Travelled:</span>
+                <span id="sim-km-label" style="color: var(--text-main); font-weight: 800;">20 km / day</span>
+              </div>
+              <input type="range" class="custom-range" id="sim-daily-km" min="5" max="80" value="20" step="5">
+            </div>
+
+            <div class="sim-footprint-display" style="margin-top: 20px;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Current Footprint</div>
+              <div class="sim-footprint-val" id="sim-cur-display">3.8 kg CO₂</div>
+            </div>
+          </div>
+
+          <!-- Arrow Divider -->
+          <div class="sim-arrow-divider">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+
+          <!-- New Habit -->
+          <div class="sim-box sim-box-future">
+            <div class="sim-box-tag future">New Sustainable Habit</div>
+
+            <div class="sim-select-group">
+              <label class="sim-label" for="sim-new-mode">Change To</label>
+              <select class="sim-select" id="sim-new-mode">
+                <option value="bus" selected>🚌 Public Bus</option>
+                <option value="metro">🚇 Metro Transit</option>
+                <option value="bicycle">🚲 Bicycle (0 emissions)</option>
+                <option value="walking">🚶 Walking (0 emissions)</option>
+              </select>
+            </div>
+
+            <div style="margin-top: 24px; padding: 12px; background: rgba(16, 185, 129, 0.12); border-radius: var(--radius-md); text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--primary-800);">
+              Active Sustainable Mode
+            </div>
+
+            <div class="sim-footprint-display" style="margin-top: 20px;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase;">New Footprint</div>
+              <div class="sim-footprint-val" id="sim-new-display">1.5 kg CO₂</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Results Banner -->
+        <div class="sim-results-banner">
+          <div>
+            <div class="sim-result-headline" id="sim-delta-display">Potential difference: 2.3 kg CO₂/day</div>
+            <div class="sim-result-sub" id="sim-annual-display">
+              Annual Savings: 840 kg CO₂ / year
+            </div>
+          </div>
+          <div class="sim-tree-callout">
+            <div class="sim-tree-count" id="sim-trees-display">
+              <i class="fa-solid fa-tree"></i> ~40 Trees Planted / Year
+            </div>
+            <div style="font-size: 0.8rem; opacity: 0.9; margin-top: 4px;">Carbon absorption equal to planting 40 trees</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-modal-header">
+        <div class="profile-avatar-large" id="profile-avatar-display">🌱</div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800;" id="profile-name-display">Eco Warrior</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;" id="profile-email-display">user@ecotrack.org</p>
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); font-size: 0.75rem; margin-top: 6px;" id="profile-joined-display">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

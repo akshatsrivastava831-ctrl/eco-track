@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Eco Guidelines &amp; Tips | EcoTrack</title>
+  <meta name="description" content="Explore general educational environmental guidelines across transportation, energy, food, waste, and eco habits.">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="tips-view">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link"><i class="fa-solid fa-seedling"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link active"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="section-header" style="text-align: left; margin-bottom: 28px;">
+        <span class="section-tag">Environmental Knowledge Base</span>
+        <h1 class="section-title">💡 General Educational Eco Guidelines</h1>
+        <p class="section-subtitle" style="margin: 0;">
+          A comprehensive reference guide for sustainable living. Read and learn practical, science-backed lifestyle methods across key environmental sectors.
+        </p>
+      </div>
+
+      <!-- Notice: Personalized tips note (Requirement 6) -->
+      <div style="background: var(--primary-50); border: 1px solid var(--primary-200); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <i class="fa-solid fa-circle-info" style="color: var(--primary-700); font-size: 1.25rem;"></i>
+          <span style="font-size: 0.88rem; color: var(--primary-900);">
+            <strong>Educational Guidelines Hub:</strong> Looking for custom advice based on your own emissions? Personalized tips are automatically generated with your results on the <strong>Carbon Calculator</strong>.
+          </span>
+        </div>
+        <a href="calculator.html" class="btn btn-primary btn-sm" style="padding: 6px 14px; font-size: 0.82rem;">
+          Go to Calculator &rarr;
+        </a>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="tips-category-tabs" id="tips-filter-tabs">
+        <button type="button" class="tips-cat-tab active" data-category="all">
+          <i class="fa-solid fa-border-all"></i> All Categories
+        </button>
+        <button type="button" class="tips-cat-tab" data-category="transport">
+          <i class="fa-solid fa-car"></i> 🚗 Transportation
+        </button>
+        <button type="button" class="tips-cat-tab" data-category="energy">
+          <i class="fa-solid fa-bolt"></i> ⚡ Energy
+        </button>
+        <button type="button" class="tips-cat-tab" data-category="food">
+          <i class="fa-solid fa-utensils"></i> 🍎 Food
+        </button>
+        <button type="button" class="tips-cat-tab" data-category="waste">
+          <i class="fa-solid fa-trash-can"></i> ♻️ Waste
+        </button>
+        <button type="button" class="tips-cat-tab" data-category="general">
+          <i class="fa-solid fa-seedling"></i> 🌱 General Guidelines
+        </button>
+      </div>
+
+      <!-- Educational Tips Cards Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;" id="educational-tips-grid">
+        
+        <!-- Transportation 1 -->
+        <div class="tips-edu-card" data-category="transport">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #d1fae5; color: #065f46;">🚗 Transportation</span>
+              <span class="kpi-badge kpi-badge-green">High Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Prioritize Public Transit &amp; Rail
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Public transit produces approximately 65-75% fewer carbon emissions per passenger-kilometer compared to solo driving in a combustion engine vehicle.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Replace 2 weekly car commutes with commuter bus or metro.
+          </div>
+        </div>
+
+        <!-- Transportation 2 -->
+        <div class="tips-edu-card" data-category="transport">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #d1fae5; color: #065f46;">🚗 Transportation</span>
+              <span class="kpi-badge kpi-badge-green">Zero Emission</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Active Travel for Trips Under 3 km
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Cold-engine short trips are when cars emit the highest concentration of pollutants per kilometer. Walking and bicycling generate zero tailpipe emissions while boosting cardiovascular health.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Walk or cycle for neighborhood errands and short campus commutes.
+          </div>
+        </div>
+
+        <!-- Transportation 3 -->
+        <div class="tips-edu-card" data-category="transport">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #d1fae5; color: #065f46;">🚗 Transportation</span>
+              <span class="kpi-badge kpi-badge-green">Medium Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Carpooling &amp; Smooth Driving
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Sharing a ride with just one other commuter instantly halves your per-person emissions. Maintaining steady speeds and avoiding rapid acceleration reduces fuel consumption by up to 20%.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Coordinate weekly ride-shares with neighbors or classmates.
+          </div>
+        </div>
+
+        <!-- Energy 1 -->
+        <div class="tips-edu-card" data-category="energy">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #e0f2fe; color: #0369a1;">⚡ Energy</span>
+              <span class="kpi-badge kpi-badge-sky">High Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Eliminate Standby Vampire Loads
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Consumer electronics on standby draw constant phantom power, representing 5% to 10% of total household residential electricity consumption each month.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Use switchable surge protectors and unplug laptop/phone chargers when not in use.
+          </div>
+        </div>
+
+        <!-- Energy 2 -->
+        <div class="tips-edu-card" data-category="energy">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #e0f2fe; color: #0369a1;">⚡ Energy</span>
+              <span class="kpi-badge kpi-badge-sky">Medium Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Thermostat &amp; AC Optimization
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Setting air conditioning to 24°C (75°F) instead of 18–20°C significantly reduces compressor workload, lowering electrical demand by 6-8% per degree.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Keep AC temperatures moderate and utilize ceiling fans for air circulation.
+          </div>
+        </div>
+
+        <!-- Food 1 -->
+        <div class="tips-edu-card" data-category="food">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #f0fdf4; color: #15803d;">🍎 Food</span>
+              <span class="kpi-badge kpi-badge-green">High Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Adopt Plant-Rich Meals
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Plant-based proteins (beans, lentils, tofu, grains) require up to 80% less land, water, and greenhouse gas inputs compared to ruminant meat production like beef and lamb.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Dedicate 3 days a week to completely plant-forward lunches and dinners.
+          </div>
+        </div>
+
+        <!-- Food 2 -->
+        <div class="tips-edu-card" data-category="food">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #f0fdf4; color: #15803d;">🍎 Food</span>
+              <span class="kpi-badge kpi-badge-green">Zero Waste</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Prevent Kitchen Food Waste
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Discarded food rotting in municipal landfills generates anaerobic methane gas, a potent greenhouse gas 28 times more heat-trapping than CO₂.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Plan grocery purchases in advance and freeze leftovers before expiration.
+          </div>
+        </div>
+
+        <!-- Waste 1 -->
+        <div class="tips-edu-card" data-category="waste">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #f1f5f9; color: #475569;">♻️ Waste</span>
+              <span class="kpi-badge kpi-badge-amber">Easy Win</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Carry Reusable Daily Essentials
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Single-use packaging, PET water bottles, and disposable coffee cups require intense petrochemical manufacturing and rarely degrade in nature.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Keep a refillable stainless steel water bottle and canvas tote in your everyday bag.
+          </div>
+        </div>
+
+        <!-- Waste 2 -->
+        <div class="tips-edu-card" data-category="waste">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #f1f5f9; color: #475569;">♻️ Waste</span>
+              <span class="kpi-badge kpi-badge-amber">Medium Impact</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Rigorous Waste Sorting &amp; Composting
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Separating clean paper, corrugated cardboard, glass, and aluminum ensures recyclable materials can re-enter circular production without landfill disposal.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Rinse containers before disposal to prevent recycling batch contamination.
+          </div>
+        </div>
+
+        <!-- General Guidelines 1 -->
+        <div class="tips-edu-card" data-category="general">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #ecfdf5; color: #047857;">🌱 General Guidelines</span>
+              <span class="kpi-badge kpi-badge-green">Mindset</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Practice Mindful Consumption
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Embodied emissions from manufactured apparel, electronics, and fast consumer goods often exceed direct energy emissions. Prioritize durability, repair, and circular reuse.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Apply the 30-day rule before purchasing non-essential items.
+          </div>
+        </div>
+
+        <!-- General Guidelines 2 -->
+        <div class="tips-edu-card" data-category="general">
+          <div>
+            <div class="tips-card-top">
+              <span class="badge-pill" style="background: #ecfdf5; color: #047857;">🌱 General Guidelines</span>
+              <span class="kpi-badge kpi-badge-green">Habit Loop</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 12px 0 6px 0;">
+              Daily Consistency Over Perfection
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+              Environmental impact is aggregate. Logging your carbon footprint daily builds consciousness that naturally leads to lower-emission decisions over weeks and months.
+            </p>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--primary-700); font-weight: 700; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+            💡 Action: Check in daily on EcoTrack to build your permanent streak tier.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-modal-header">
+        <div class="profile-avatar-large" id="profile-avatar-display">🌱</div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800;" id="profile-name-display">Eco Warrior</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;" id="profile-email-display">user@ecotrack.org</p>
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); font-size: 0.75rem; margin-top: 6px;" id="profile-joined-display">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

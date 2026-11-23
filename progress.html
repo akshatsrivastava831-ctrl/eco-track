@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monthly Progress &amp; History | EcoTrack</title>
+  <meta name="description" content="View your monthly carbon footprint history, month-over-month comparisons, emissions trajectory, and calculation logs.">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="progress-view">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link"><i class="fa-solid fa-seedling"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="section-header" style="text-align: left; margin-bottom: 28px;">
+        <span class="section-tag">Historical Intelligence &amp; Analytics</span>
+        <h1 class="section-title">📊 Monthly Progress &amp; Comparison</h1>
+        <p class="section-subtitle" style="margin: 0;">
+          Inspect your actual carbon footprint trends over time. Compare current and previous months to track real emission reductions and habit consistency.
+        </p>
+      </div>
+
+      <!-- Month-over-Month Comparison Grid (Requirement 4) -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-bottom: 32px;">
+        <!-- 1. Current Month -->
+        <div class="kpi-card" style="border-left: 4px solid var(--primary-500);">
+          <div class="kpi-top">
+            <div class="kpi-icon feature-icon-emerald">
+              <i class="fa-solid fa-calendar-day"></i>
+            </div>
+            <span class="kpi-badge kpi-badge-green" id="prog-cur-month-badge">Current Month</span>
+          </div>
+          <div>
+            <div class="kpi-title" id="prog-cur-month-title">Current Month</div>
+            <div class="kpi-value" id="prog-cur-month-avg">-- kg CO₂</div>
+            <div class="kpi-subtext" id="prog-cur-month-sub">Daily average footprint (0 entries)</div>
+          </div>
+        </div>
+
+        <!-- 2. Previous Month -->
+        <div class="kpi-card" style="border-left: 4px solid var(--energy-sky);">
+          <div class="kpi-top">
+            <div class="kpi-icon feature-icon-sky">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <span class="kpi-badge kpi-badge-sky" id="prog-prev-month-badge">Previous Month</span>
+          </div>
+          <div>
+            <div class="kpi-title" id="prog-prev-month-title">Previous Month</div>
+            <div class="kpi-value" id="prog-prev-month-avg">-- kg CO₂</div>
+            <div class="kpi-subtext" id="prog-prev-month-sub">Daily average footprint (0 entries)</div>
+          </div>
+        </div>
+
+        <!-- 3. Comparison & Improvement -->
+        <div class="kpi-card" style="border-left: 4px solid var(--streak-amber);">
+          <div class="kpi-top">
+            <div class="kpi-icon feature-icon-amber">
+              <i class="fa-solid fa-arrow-trend-down"></i>
+            </div>
+            <span class="kpi-badge kpi-badge-green" id="prog-comparison-badge">Reduction</span>
+          </div>
+          <div>
+            <div class="kpi-title">Month-over-Month Comparison</div>
+            <div class="kpi-value" id="prog-comparison-val" style="color: #059669;">-- %</div>
+            <div class="kpi-subtext" id="prog-comparison-sub">Awaiting calculation logs</div>
+          </div>
+        </div>
+
+        <!-- 4. Target Adherence Indicator -->
+        <div class="kpi-card" style="border-left: 4px solid var(--purple-special);">
+          <div class="kpi-top">
+            <div class="kpi-icon feature-icon-purple">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <span class="kpi-badge kpi-badge-sky">Target Benchmark</span>
+          </div>
+          <div>
+            <div class="kpi-title">Sustainable Target</div>
+            <div class="kpi-value" id="prog-target-val">4.0 kg CO₂</div>
+            <div class="kpi-subtext" id="prog-target-sub">Global recommended daily cap</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real Data Performance Summary Banner -->
+      <div class="weekly-report-banner" style="margin-bottom: 32px;">
+        <div class="weekly-report-grid">
+          <div>
+            <span class="badge-pill" style="background: rgba(255, 255, 255, 0.2); color: #fff; border-color: rgba(255, 255, 255, 0.3); margin-bottom: 12px;">
+              <i class="fa-solid fa-chart-pie"></i> Activity Overview
+            </span>
+            <h2 style="font-size: 2rem; font-weight: 800; line-height: 1.2; margin-bottom: 8px;" id="prog-summary-title">
+              Your Real Progress Summary
+            </h2>
+            <p style="font-size: 0.95rem; opacity: 0.9; line-height: 1.5;" id="prog-summary-desc">
+              All metrics shown on this page are compiled strictly from your saved calculation records.
+            </p>
+          </div>
+
+          <div class="report-stat-pill-row">
+            <div class="report-box">
+              <div class="report-box-label">Total Calculations</div>
+              <div class="report-box-val" id="rep-total-entries">0</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">Entries logged</span>
+            </div>
+
+            <div class="report-box">
+              <div class="report-box-label">Overall Average</div>
+              <div class="report-box-val" id="rep-avg-footprint">-- kg</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">Daily footprint</span>
+            </div>
+
+            <div class="report-box">
+              <div class="report-box-label">Latest Eco Score</div>
+              <div class="report-box-val" id="rep-latest-score">--/100</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">Environmental rating</span>
+            </div>
+
+            <div class="report-box">
+              <div class="report-box-label">Active Streak</div>
+              <div class="report-box-val" id="rep-streak">0 Days 🔥</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">Consecutive tracking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clean Visual Graph / Chart Row -->
+      <div class="charts-row" style="margin-bottom: 32px;">
+        <!-- Emissions Trajectory Trend Bar Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">
+                <i class="fa-solid fa-chart-column" style="color: var(--primary-600); margin-right: 8px;"></i>
+                Emissions Trajectory History (kg CO₂)
+              </h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                Dashed line indicates your sustainable reference target of 4.0 kg CO₂.
+              </p>
+            </div>
+          </div>
+          <div class="chart-canvas-container" style="height: 240px;">
+            <canvas id="canvas-weekly-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Category Doughnut Distribution Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">
+                <i class="fa-solid fa-chart-pie" style="color: var(--energy-sky); margin-right: 8px;"></i>
+                Category Emission Share
+              </h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                Aggregate share across Transport, Electricity, Food, and Waste
+              </p>
+            </div>
+          </div>
+          <div class="chart-canvas-container" style="height: 180px;">
+            <canvas id="canvas-category-chart"></canvas>
+          </div>
+          <!-- Legend -->
+          <div id="prog-category-legend" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; font-size: 0.78rem; font-weight: 700;">
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #10b981;"></span> Transport <span id="prog-leg-transport">--%</span></div>
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #0284c7;"></span> Energy <span id="prog-leg-energy">--%</span></div>
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #16a34a;"></span> Food <span id="prog-leg-food">--%</span></div>
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border-radius: 50%; background: #64748b;"></span> Waste <span id="prog-leg-waste">--%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Table / Activity Log -->
+      <div class="history-table-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main);">
+              <i class="fa-solid fa-clock-rotate-left" style="color: var(--primary-600); margin-right: 8px;"></i>
+              Monthly Carbon Footprint History
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+              Saved calculation logs captured from your daily routine
+            </p>
+          </div>
+          <a href="calculator.html" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-plus"></i> New Calculation
+          </a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="eco-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Transport Mode</th>
+                <th>Electricity (kWh)</th>
+                <th>Diet Choice</th>
+                <th>Daily Footprint</th>
+                <th>Eco Score</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <!-- Rendered dynamically from real saved user data -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-modal-header">
+        <div class="profile-avatar-large" id="profile-avatar-display">🌱</div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800;" id="profile-name-display">Eco Warrior</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;" id="profile-email-display">user@ecotrack.org</p>
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); font-size: 0.75rem; margin-top: 6px;" id="profile-joined-display">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

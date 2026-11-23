@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoTrack 🌱 | Carbon Footprint Tracker</title>
+  <meta name="description" content="Track your footprint. Build eco streaks. Protect the planet with EcoTrack. A modern environmental lifestyle and habit streak tracker.">
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Opening Splash Animation (5-Second Cinematic Experience - Requirement 11) -->
+  <div id="opening-splash" class="opening-splash-overlay" aria-hidden="true">
+    <div class="splash-particles">
+      <span class="splash-particle p1"></span>
+      <span class="splash-particle p2"></span>
+      <span class="splash-particle p3"></span>
+      <span class="splash-particle p4"></span>
+    </div>
+    <div class="splash-stage">
+      <div class="splash-earth-ring"></div>
+      <div class="splash-leaf-wrap">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <div class="splash-brand-group">
+        <h1 class="splash-brand-title">
+          <span>Eco</span><span class="splash-brand-accent">Track</span>
+          <span class="splash-shine-glint"></span>
+        </h1>
+        <p class="splash-tagline">Carbon Footprint Tracker</p>
+      </div>
+      <div class="splash-loader-bar">
+        <div class="splash-loader-fill"></div>
+      </div>
+    </div>
+    <button class="splash-skip-btn" id="splash-skip-btn" type="button">Skip &rarr;</button>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link"><i class="fa-solid fa-seedling"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="fa-solid fa-earth-americas"></i> Environmental Lifestyle Companion
+          </div>
+          <h1 class="hero-title">
+            Track your footprint.<br>
+            Build eco streaks.<br>
+            <span class="text-gradient">Protect the planet.</span>
+          </h1>
+          <p class="hero-subtitle">
+            EcoTrack empowers you to understand your routine emissions, build sustainable habits through consecutive daily tracking, and earn permanent environmental milestones.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="dashboard.html" class="btn btn-primary">
+              <i class="fa-solid fa-gauge-high"></i> Open Dashboard
+            </a>
+            <a href="calculator.html" class="btn btn-secondary">
+              <i class="fa-solid fa-calculator"></i> Carbon Calculator
+            </a>
+          </div>
+        </div>
+
+        <!-- Live Preview Card -->
+        <div class="hero-preview-card">
+          <div class="preview-header">
+            <div class="preview-user">
+              <div class="preview-avatar" id="hero-avatar">🌱</div>
+              <div>
+                <div class="preview-title" id="hero-welcome-name">Welcome to EcoTrack</div>
+                <div class="preview-subtitle">Daily Impact Snapshot</div>
+              </div>
+            </div>
+            <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800);" id="hero-footprint-badge">Active</span>
+          </div>
+
+          <div class="preview-body">
+            <div class="preview-stat-grid">
+              <div class="preview-stat">
+                <span class="stat-label">Daily Footprint</span>
+                <span class="stat-value" id="hero-today-footprint">0.0 kg</span>
+              </div>
+              <div class="preview-stat">
+                <span class="stat-label">Eco Score</span>
+                <span class="stat-value" id="hero-score-count">75/100</span>
+              </div>
+              <div class="preview-stat">
+                <span class="stat-label">Active Streak</span>
+                <span class="stat-value text-amber" id="hero-streak-count">0 Days 🔥</span>
+              </div>
+            </div>
+            
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.85rem; color: var(--text-secondary);">Start your tracking journey today</span>
+              <a href="dashboard.html" class="btn btn-primary btn-sm">Go to Dashboard &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Features Overview -->
+    <section class="features-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Core Capabilities</span>
+          <h2 class="section-title">Engineered for Academic &amp; Environmental Excellence</h2>
+          <p class="section-subtitle">
+            Clean calculation algorithms, persistent multi-user data isolation, and professional visual reporting.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon feature-icon-emerald">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <h3 class="feature-title">Carbon Calculator</h3>
+            <p class="feature-desc">
+              Accurately computes emissions across transportation, power, diet, and waste using verified environmental emission factors.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon feature-icon-amber">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h3 class="feature-title">Streak Rewards</h3>
+            <p class="feature-desc">
+              Cultivate lasting habits with our 7-day Eco Starter, 14-day Eco Saver, and 30-day Green Champion recognition tiers.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon feature-icon-sky">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h3 class="feature-title">Monthly Progress</h3>
+            <p class="feature-desc">
+              Monitor your trajectory over time with clean visual charts, month-over-month comparisons, and historical calculation logs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-modal-header">
+        <div class="profile-avatar-large" id="profile-avatar-display">🌱</div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800;" id="profile-name-display">Eco Warrior</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;" id="profile-email-display">user@ecotrack.org</p>
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); font-size: 0.75rem; margin-top: 6px;" id="profile-joined-display">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

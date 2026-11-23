@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streak Rewards | EcoTrack – Carbon Footprint Tracker</title>
+  <meta name="description" content="Track your consecutive daily carbon logging streaks and earn permanent environmental milestones: Eco Starter, Eco Saver, and Green Champion.">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="rewards-view">
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+        <span>Eco<span class="brand-highlight">Track</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+        <li><a href="calculator.html" class="nav-link"><i class="fa-solid fa-seedling"></i> Carbon Calculator</a></li>
+        <li><a href="progress.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Monthly Progress</a></li>
+        <li><a href="rewards.html" class="nav-link active"><i class="fa-solid fa-trophy"></i> Rewards</a></li>
+        <li><a href="tips.html" class="nav-link"><i class="fa-solid fa-lightbulb"></i> Tips</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Notification Bell Icon -->
+        <div class="nav-bell-wrapper" id="nav-bell-wrapper">
+          <button class="nav-icon-btn" id="nav-bell-btn" aria-label="Notifications" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="nav-bell-badge" id="nav-bell-badge"></span>
+          </button>
+          
+          <div class="notif-dropdown" id="notif-dropdown">
+            <div class="notif-header">
+              <span class="notif-title"><i class="fa-solid fa-bell text-emerald"></i> Notifications</span>
+              <span class="notif-count-tag" id="notif-count-tag">Updates</span>
+            </div>
+            <div class="notif-list" id="notif-list">
+              <!-- Dynamically populated from actual user state -->
+            </div>
+          </div>
+        </div>
+
+        <!-- User Profile Action -->
+        <button class="nav-icon-btn" id="nav-profile-btn" title="View Profile" style="display: none;">
+          <i class="fa-solid fa-user"></i>
+        </button>
+
+        <!-- Auth Profile / Login Action -->
+        <div id="nav-auth-container">
+          <button class="btn btn-primary btn-sm" id="nav-login-btn">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In / Register
+          </button>
+        </div>
+
+        <button class="mobile-toggle" aria-label="Toggle navigation menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="section-header" style="text-align: left; margin-bottom: 28px;">
+        <span class="section-tag">Consistency Recognition</span>
+        <h1 class="section-title">🏆 Eco Streak Rewards</h1>
+        <p class="section-subtitle" style="margin: 0;">
+          Consistency is the cornerstone of lasting sustainability. Earn permanent milestone rewards by logging your carbon footprint daily.
+        </p>
+      </div>
+
+      <!-- Current Streak & Next Milestone Overview Banner -->
+      <div class="weekly-report-banner" style="margin-bottom: 32px;">
+        <div class="weekly-report-grid">
+          <div>
+            <span class="badge-pill" style="background: rgba(255, 255, 255, 0.2); color: #fff; border-color: rgba(255, 255, 255, 0.3); margin-bottom: 12px;">
+              <i class="fa-solid fa-fire"></i> Active Streak Tracking
+            </span>
+            <h2 style="font-size: 2rem; font-weight: 800; line-height: 1.2; margin-bottom: 8px;">
+              Streak Milestones Status
+            </h2>
+            <p style="font-size: 0.95rem; opacity: 0.9; line-height: 1.5;">
+              Rewards are unlocked purely through consecutive tracking days and remain permanently active once earned.
+            </p>
+          </div>
+
+          <div class="report-stat-pill-row">
+            <div class="report-box">
+              <div class="report-box-label">Current Streak</div>
+              <div class="report-box-val" id="rewards-cur-streak">0 Days 🔥</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">Consecutive days</span>
+            </div>
+
+            <div class="report-box">
+              <div class="report-box-label">Best Streak</div>
+              <div class="report-box-val" id="rewards-best-streak">0 Days 🌟</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;">All-time record</span>
+            </div>
+
+            <div class="report-box">
+              <div class="report-box-label">Next Reward</div>
+              <div class="report-box-val" id="rewards-next-title" style="font-size: 1.1rem;">Eco Starter</div>
+              <span style="font-size: 0.75rem; opacity: 0.85;" id="rewards-next-days-left">7 days left</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overall Progress Towards Next Reward Card -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 22px; margin-bottom: 32px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+          <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">
+            <i class="fa-solid fa-gift text-emerald" style="margin-right: 6px;"></i>
+            Progress toward next reward: <strong id="progress-next-reward-name">Eco Starter (7 Days)</strong>
+          </span>
+          <span style="font-size: 0.88rem; font-weight: 800; color: var(--primary-700);" id="progress-next-reward-count">0 / 7 Days</span>
+        </div>
+        <div class="reward-progress-bar-wrap" style="height: 10px;">
+          <div class="reward-progress-bar-fill" id="progress-next-reward-bar" style="width: 0%;"></div>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 8px;">
+          Log daily calculations consecutively to fill this bar and claim permanent recognition.
+        </div>
+      </div>
+
+      <!-- Approved 3-Tier Streak Reward Cards (Requirement 5) -->
+      <div style="margin-bottom: 40px;">
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
+          Approved Streak Tiers
+        </h2>
+
+        <div class="rewards-grid" id="rewards-container">
+          <!-- Tier 1: 7 Days → 🌱 Eco Starter -->
+          <div class="reward-card" id="reward-card-starter">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="reward-icon-wrap"><i class="fa-solid fa-seedling"></i></div>
+              <span class="reward-status-badge locked" id="badge-reward-starter">7 days left</span>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-600); text-transform: uppercase;">Tier 1 Milestone</div>
+              <h3 class="reward-title">🌱 Eco Starter (7 Days)</h3>
+              <p class="reward-desc">Complete 7 consecutive days of carbon footprint tracking.</p>
+            </div>
+            <div class="reward-progress-bar-wrap">
+              <div class="reward-progress-bar-fill" id="bar-reward-starter" style="width: 0%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+              <span style="font-weight: 700; color: var(--text-muted);" id="sub-reward-starter">0 / 7 Days Completed</span>
+              <span class="badge-pill" style="font-size: 0.7rem; background: var(--bg-main);" id="status-reward-starter">Locked</span>
+            </div>
+          </div>
+
+          <!-- Tier 2: 14 Days → 🌿 Eco Saver -->
+          <div class="reward-card" id="reward-card-saver">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="reward-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
+              <span class="reward-status-badge locked" id="badge-reward-saver">14 days left</span>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-600); text-transform: uppercase;">Tier 2 Milestone</div>
+              <h3 class="reward-title">🌿 Eco Saver (14 Days)</h3>
+              <p class="reward-desc">Maintain a 14-day streak of mindful environmental tracking.</p>
+            </div>
+            <div class="reward-progress-bar-wrap">
+              <div class="reward-progress-bar-fill" id="bar-reward-saver" style="width: 0%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+              <span style="font-weight: 700; color: var(--text-muted);" id="sub-reward-saver">0 / 14 Days Completed</span>
+              <span class="badge-pill" style="font-size: 0.7rem; background: var(--bg-main);" id="status-reward-saver">Locked</span>
+            </div>
+          </div>
+
+          <!-- Tier 3: 30 Days → 🏆 Green Champion -->
+          <div class="reward-card" id="reward-card-champion">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="reward-icon-wrap"><i class="fa-solid fa-trophy"></i></div>
+              <span class="reward-status-badge locked" id="badge-reward-champion">30 days left</span>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; font-weight: 800; color: var(--primary-600); text-transform: uppercase;">Tier 3 Milestone</div>
+              <h3 class="reward-title">🏆 Green Champion (30 Days)</h3>
+              <p class="reward-desc">Reach 30 consecutive tracking days. The pinnacle of sustainable habit consistency.</p>
+            </div>
+            <div class="reward-progress-bar-wrap">
+              <div class="reward-progress-bar-fill" id="bar-reward-champion" style="width: 0%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem;">
+              <span style="font-weight: 700; color: var(--text-muted);" id="sub-reward-champion">0 / 30 Days Completed</span>
+              <span class="badge-pill" style="font-size: 0.7rem; background: var(--bg-main);" id="status-reward-champion">Locked</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Prompt -->
+      <div style="text-align: center; padding: 24px; background: var(--bg-surface); border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 40px;">
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 6px;">Ready to extend your streak?</h3>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 16px;">
+          Log your daily lifestyle emissions in the Carbon Calculator today to advance towards your next milestone.
+        </p>
+        <a href="calculator.html" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Log Today's Footprint
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 1-2 Second Celebration Animation Modal (Requirement 5) -->
+  <div id="celebration-overlay" class="celebration-overlay" aria-hidden="true">
+    <div class="celebration-card">
+      <div class="celebration-icon" id="celebration-icon">🎉</div>
+      <h3 class="celebration-title" id="celebration-title">Reward Unlocked!</h3>
+      <p class="celebration-desc" id="celebration-desc">
+        Congratulations! You've achieved a permanent streak milestone for your environmental consistency.
+      </p>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div id="profile-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+      
+      <div class="profile-modal-header">
+        <div class="profile-avatar-large" id="profile-avatar-display">🌱</div>
+        <div>
+          <h3 style="margin: 0; font-size: 1.3rem; font-weight: 800;" id="profile-name-display">Eco Warrior</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 2px 0 0 0;" id="profile-email-display">user@ecotrack.org</p>
+          <span class="badge-pill" style="background: var(--primary-100); color: var(--primary-800); font-size: 0.75rem; margin-top: 6px;" id="profile-joined-display">
+            Joined Recently
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-stats-grid">
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Current Streak</div>
+          <div class="profile-stat-val" id="profile-streak-val">0 Days 🔥</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Best Streak</div>
+          <div class="profile-stat-val" id="profile-best-streak-val">0 Days 🌟</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Calculations</div>
+          <div class="profile-stat-val" id="profile-calcs-val">0 Logged</div>
+        </div>
+        <div class="profile-stat-box">
+          <div class="profile-stat-label">Eco Score</div>
+          <div class="profile-stat-val" id="profile-score-val">75/100</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn btn-outline-danger btn-sm" id="profile-logout-btn">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authentication Modal -->
+  <div id="auth-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-auth-modal-btn"><i class="fa-solid fa-xmark"></i></button>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-register">Create Account</button>
+      </div>
+
+      <div id="auth-alert-box" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="signin-form">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="signin-email">Email Address</label>
+          <input type="email" class="calc-input" id="signin-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="signin-password">Password</label>
+          <input type="password" class="calc-input" id="signin-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="signin-submit-btn">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In to EcoTrack
+        </button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" style="display: none;">
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-name">Full Name</label>
+          <input type="text" class="calc-input" id="reg-name" placeholder="Your name" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-email">Email Address</label>
+          <input type="email" class="calc-input" id="reg-email" placeholder="name@college.edu" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 14px;">
+          <label class="calc-label" for="reg-password">Password</label>
+          <input type="password" class="calc-input" id="reg-password" placeholder="At least 6 characters" minlength="6" required>
+        </div>
+        <div class="calc-input-group" style="margin-bottom: 20px;">
+          <label class="calc-label" for="reg-confirm-password">Confirm Password</label>
+          <input type="password" class="calc-input" id="reg-confirm-password" placeholder="Repeat your password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;" id="register-submit-btn">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid" style="grid-template-columns: 2fr 1fr 1fr;">
+        <div class="footer-brand">
+          <a href="dashboard.html" class="brand-logo" style="color: #fff;">
+            <span class="leaf-icon"><i class="fa-solid fa-leaf"></i></span>
+            <span>Eco<span style="color: var(--primary-400);">Track</span></span>
+          </a>
+          <p>
+            An interactive environmental lifestyle application dedicated to making carbon mindfulness engaging, practical, and rewarding.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="calculator.html">Carbon Calculator</a></li>
+            <li><a href="progress.html">Monthly Progress</a></li>
+            <li><a href="rewards.html">Rewards</a></li>
+            <li><a href="tips.html">Tips</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Technology</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+            Node.js &bull; Express.js &bull; MongoDB / Local Storage &bull; Vanilla JS &bull; REST APIs
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 EcoTrack – Carbon Footprint Tracker. All rights reserved.</div>
+        <div>Built for Academic &amp; Environmental Presentation.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
